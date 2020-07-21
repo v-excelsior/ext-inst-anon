@@ -1,0 +1,12 @@
+{
+  "manifest_version": 2,
+  "name": "Inst Anon",
+  "version": "1.00",
+
+  "default_locale": "en",
+  "description": "Easy app to helps you watching Inst anounimously",
+  "icons": { "16": "icon16.png", "48": "icon64.png", "128": "icon128.png" },
+
+  "browser_action": { "default_popup": "main.html" },
+  "author": "Dmytro Vakuluuk | t.me/v_excelsior"
+}

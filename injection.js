@@ -3,18 +3,6 @@ const config = { attributes: true }
 
 console.log('Injected')
 
-//Deleting starter login banner at the bottom
-// const deleteLoginBanner = () => {
-//     let loginBanner = document.querySelector('.glyphsSpriteGrey_Close.u-__7')
-//     if (loginBanner) {
-//         loginBanner.click()
-//         console.log('Banner deleted')
-//     }
-// }
-
-// deleteLoginBanner()
-
-
 let checker = function () {
     target.style.overflow = 'scroll'
     let presentations = document.querySelectorAll('[role=presentation]')
@@ -25,11 +13,18 @@ let checker = function () {
     })
 }
 
-// document.addEventListener("click", (e) => {
-//   console.log(
-//     document.querySelectorAll("[role=menuitem]")[0].childNodes[0].innerHTML
-//   );
-// });
+let posts = document.querySelector('article')
+
+posts.addEventListener('click', clickOnPostHandler, false)
+
+function clickOnPostHandler(e) {
+    let link = e.target.closest('a')
+    console.log('From handler:', link.href)
+}
+
+document.addEventListener('click', (e) => {
+    console.log('Target: ', e.target)
+})
 
 const observer = new MutationObserver(checker)
 

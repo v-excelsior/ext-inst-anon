@@ -1,22 +1,29 @@
-const target = document.querySelector("body");
-const config = { attributes: true };
+const target = document.querySelector('body')
+const config = { attributes: true }
 
-console.log("Injected");
+console.log('Injected')
 
 //Deleting starter login banner at the bottom
-let loginBanner = document.querySelector(".glyphsSpriteGrey_Close.u-__7")
-if(loginBanner) loginBanner.click();
+// const deleteLoginBanner = () => {
+//     let loginBanner = document.querySelector('.glyphsSpriteGrey_Close.u-__7')
+//     if (loginBanner) {
+//         loginBanner.click()
+//         console.log('Banner deleted')
+//     }
+// }
+
+// deleteLoginBanner()
 
 
 let checker = function () {
-  target.style.overflow = "scroll";
-  let presentations = document.querySelectorAll("[role=presentation]");
-  presentations.forEach((elem) => {
-    if (elem.children.length === 2) {
-      elem.remove();
-    }
-  });
-};
+    target.style.overflow = 'scroll'
+    let presentations = document.querySelectorAll('[role=presentation]')
+    presentations.forEach((elem) => {
+        if (elem.children.length === 2) {
+            elem.remove()
+        }
+    })
+}
 
 // document.addEventListener("click", (e) => {
 //   console.log(
@@ -24,8 +31,6 @@ let checker = function () {
 //   );
 // });
 
-//Закрыть/Закрити/Close
+const observer = new MutationObserver(checker)
 
-const observer = new MutationObserver(checker);
-
-observer.observe(target, config);
+observer.observe(target, config)

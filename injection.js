@@ -22,11 +22,21 @@ function clickOnPostHandler(e) {
     let postNode = document.createElement('iframe')
     postNode.src = link
     postNode.style.cssText = `
-        position:absolute;
+        position:fixed;
+        top:0;
+        left:0;
         z-index:1;
-        width:800px;
-        height:400px;
+        width:100vw;
+        height:100vh;
     `
     document.body.prepend(postNode)
+    let frame = document.querySelector('iframe')
+    frame.onload = function () {
+        console.log('Frame loaded')
+    }
+    console.log(frame.contentWindow.document)
+
+    // frame.contentWindow.document.body.style.backgroundColor = 'green'
 }
+
 posts.addEventListener('click', clickOnPostHandler, false)

@@ -2,43 +2,62 @@ console.log('Injected')
 
 let isScrollLocked = false
 
-function deleteLoginOverlay() {
-    const last = document.body.children.length - 1
-    document.body.children[last].remove()
+async function deleteLoginOverlay() {
+    console.log('Try delete')
+    let RolePresentationList = document.querySelectorAll(
+        '[role="presentation"]'
+    )
+    console.log(document.querySelectorAll('[role="presentation"]'))
+    RolePresentationList.forEach((el) => {
+        if (el.children.length > 1) {
+            el.remove()
+            console.log('Delete')
+            console.log(el)
+        }
+    })
 }
 
-const config = { attributes: true }
-//deleting blocking overlay
-const observerHandler = function () {
+// overflow controll
+const overflowObserveHadler = () => {
     document.body.style.overflow = isScrollLocked ? 'hidden' : 'scroll'
-    deleteLoginOverlay()
+    console.log('overflow changed')
 }
-const observer = new MutationObserver(observerHandler)
-observer.observe(document.body, config)
+
+function loginOverlayObserveHadler() {
+    console.log('Catch')
+    deleteLoginOverlay()
+    loginOverlayObserver.disconnect()
+    setTimeout(() => {
+        loginOverlayObserver.observe(document.body, { childList: true })
+        console.log('Recreated observer')
+    }, 0)
+}
+
+const overflowObserver = new MutationObserver(overflowObserveHadler)
+overflowObserver.observe(document.body, { attributes: true })
+
+const loginOverlayObserver = new MutationObserver(loginOverlayObserveHadler)
+loginOverlayObserver.observe(document.body, { childList: true })
 
 let posts = document.querySelector('article')
-function clickOnPostHandler(e) {
-    let link = e.target.closest('a').href
-    console.log('From handler:', link)
 
+async function clickOnPostHandler(e) {
+    await deleteLoginOverlay()
+    let link = e.target.closest('a').href
     let postNode = document.createElement('iframe')
     postNode.src = link
-    postNode.style.cssText = `
-        position:fixed;
-        top:0;
-        left:0;
-        z-index:1;
-        width:100%;
-        height:100%;
-    `
-    document.body.prepend(postNode)
-    postNode.onload = function () {
-        console.log('Frame loaded')
-        let post = postNode.contentWindow.document
-        post.querySelector('main').style.backgroundColor = 'green'
-    }
+    postNode.style.cssText = S_PostInNewFrame
+    document.body.append(postNode)
 
-    //
+    console.log('From click')
+
+    console.log(document.body.children[document.body.children.length - 1])
+
+    // postNode.onload = function () {
+    //     console.log('Frame loaded')
+    //     const post = postNode.contentWindow.document
+    //     post.querySelector('main').style.backgroundColor = 'green'
+    // }
 }
 
-posts.addEventListener('click', clickOnPostHandler)
+if (posts) posts.addEventListener('click', clickOnPostHandler)

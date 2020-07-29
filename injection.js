@@ -1,15 +1,17 @@
 console.log('Injected')
 
+let isScrollLocked = false
+
+function deleteLoginOverlay() {
+    const last = document.body.children.length - 1
+    document.body.children[last].remove()
+}
+
 const config = { attributes: true }
 //deleting blocking overlay
 const observerHandler = function () {
-    document.body.style.overflow = 'scroll'
-    let presentations = document.querySelectorAll('[role=presentation]')
-    presentations.forEach((elem) => {
-        if (elem.children.length === 2) {
-            elem.remove()
-        }
-    })
+    document.body.style.overflow = isScrollLocked ? 'hidden' : 'scroll'
+    deleteLoginOverlay()
 }
 const observer = new MutationObserver(observerHandler)
 observer.observe(document.body, config)
@@ -26,17 +28,17 @@ function clickOnPostHandler(e) {
         top:0;
         left:0;
         z-index:1;
-        width:100vw;
-        height:100vh;
+        width:100%;
+        height:100%;
     `
     document.body.prepend(postNode)
-    let frame = document.querySelector('iframe')
-    frame.onload = function () {
+    postNode.onload = function () {
         console.log('Frame loaded')
+        let post = postNode.contentWindow.document
+        post.querySelector('main').style.backgroundColor = 'green'
     }
-    console.log(frame.contentWindow.document)
 
-    // frame.contentWindow.document.body.style.backgroundColor = 'green'
+    //
 }
 
-posts.addEventListener('click', clickOnPostHandler, false)
+posts.addEventListener('click', clickOnPostHandler)
